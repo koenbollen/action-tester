@@ -1,0 +1,12 @@
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Defold
+        uses: koenbollen/defold-action@latest
+      - name: List files in the repository
+        run: |
+          ls -R ${{ github.workspace }}
