@@ -1,32 +1,37 @@
 on: [push]
 jobs:
-  build:
+  defold:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [windows, linux, web]
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v4
-      - name: Defold
-        uses: koenbollen/defold-action@main
-      - name: List files in the repository
-        run: |
-          ls -R ${{ github.workspace }}
-      - name: Archive production artifacts
-        uses: actions/upload-pages-artifact@v1
-        with:
-          name: wasm-web-build
-          path: build/default/PixelLinePlatformer
-  deploy:
-    needs: build
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
-        with:
-          artifact_name: wasm-web-build
+    - uses: actions/checkout@v4
+    - uses: actions/cache@v4
+      with:
+        path: /tmp/defold-cache
+        key: ${{ runner.os }}-${{ matrix.platform }}-defold-cache
+    - uses: koenbollen/defold-action@main
+      with:
+        target-platform: ${{ matrix.platform }}
+        defold-channel: 'stable'
+        # defold-version: '1.6.4' # Optional, overrides defold-channel
+    - uses: actions/upload-artifact@v4
+      with:
+        name: mygame-${{ matrix.platform }}.zip
+        path: ${{ needs.defold.outputs.archive-path }}
+  # deploy:
+  #   needs: build
+  #   permissions:
+  #     pages: write
+  #     id-token: write
+  #   environment:
+  #     name: github-pages
+  #     url: ${{ steps.deployment.outputs.page_url }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Deploy to GitHub Pages
+  #       id: deployment
+  #       uses: actions/deploy-pages@v2
+  #       with:
+  #         artifact_name: wasm-web-build
