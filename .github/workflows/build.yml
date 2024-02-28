@@ -9,17 +9,19 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/cache@v4
       with:
-        path: /tmp/defold-cache
-        key: ${{ runner.os }}-${{ matrix.platform }}-defold-cache
+        key: ${{matrix.platform}}-defold-cache
+        path: .defold-cache
     - uses: koenbollen/defold-action@main
+      id: build
       with:
-        target-platform: ${{ matrix.platform }}
+        target-platform: ${{matrix.platform}}
         defold-channel: 'stable'
-        # defold-version: '1.6.4' # Optional, overrides defold-channel
     - uses: actions/upload-artifact@v4
       with:
-        name: mygame-${{ matrix.platform }}.zip
-        path: ${{ needs.defold.outputs.archive-path }}
+        name: pixel-line-${{matrix.platform}}-${{github.ref_name}}-${{github.sha}}
+        path: ${{steps.build.outputs.build-path}}
+        if-no-files-found: error
+        overwrite: true
   # deploy:
   #   needs: build
   #   permissions:
@@ -27,7 +29,7 @@ jobs:
   #     id-token: write
   #   environment:
   #     name: github-pages
-  #     url: ${{ steps.deployment.outputs.page_url }}
+  #     url: ${{steps.deployment.outputs.page_url}}
   #   runs-on: ubuntu-latest
   #   steps:
   #     - name: Deploy to GitHub Pages
