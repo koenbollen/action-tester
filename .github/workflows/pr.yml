@@ -19,9 +19,10 @@ jobs:
       with:
         key: web-defold-cache
         path: .defold-cache
-    - name: Build
-      uses: koenbollen/defold-action@main
+    - uses: koenbollen/defold-action@main
       id: build
+      name: Build
+      if: github.event.action != 'closed'
       with:
         target-platform: web
         defold-channel: stable
