@@ -1,10 +1,20 @@
+name: Build and Deploy
+
 on:
   push:
     branches:
       - main
+
+concurrency:
+  group: ${{github.workflow}}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   defold:
+    name: Build Defold
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     strategy:
       matrix:
         platform: [windows, linux, web]
@@ -25,18 +35,20 @@ jobs:
         path: ${{steps.build.outputs.build-path}}
         if-no-files-found: error
         overwrite: true
-  # deploy:
-  #   needs: build
-  #   permissions:
-  #     pages: write
-  #     id-token: write
-  #   environment:
-  #     name: github-pages
-  #     url: ${{steps.deployment.outputs.page_url}}
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Deploy to GitHub Pages
-  #       id: deployment
-  #       uses: actions/deploy-pages@v2
-  #       with:
-  #         artifact_name: wasm-web-build
+  deploy:
+    name: Deploy Web Build
+    needs: [defold]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/download-artifact@v4
+      with:
+        name: pixel-line-web-${{github.ref_name}}-${{github.sha}}
+        path: dist
+    - uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: dist
+        clean-exclude: pr-preview/
+        force: false
