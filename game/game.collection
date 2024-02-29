@@ -371,7 +371,7 @@ embedded_instances {
   "\\\"\\n"
   "  \\\"SPACE = JUMP + DOUBLE JUMP\\\\n"
   "\\\"\\n"
-  "  \\\"X = SHOOT\\\"\\n"
+  "  \\\"CTRL = SHOOT\\\"\\n"
   "font: \\\"/assets/fonts/instructions.font\\\"\\n"
   "material: \\\"/builtins/fonts/label.material\\\"\\n"
   "\"\n"

@@ -15,7 +15,7 @@ key_trigger {
   action: "jump"
 }
 key_trigger {
-  input: KEY_X
+  input: KEY_CTRL
   action: "fire"
 }
 gamepad_trigger {
