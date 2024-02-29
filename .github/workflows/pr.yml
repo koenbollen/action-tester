@@ -1,0 +1,31 @@
+name: Deploy PR previews
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+
+concurrency: preview-${{ github.ref }}
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/cache@v4
+      with:
+        key: web-defold-cache
+        path: .defold-cache
+    - name: Build
+      uses: koenbollen/defold-action@main
+      id: build
+      with:
+        target-platform: web
+        defold-channel: stable
+    - name: Deploy preview
+      uses: rossjrw/pr-preview-action@v1
+      with:
+        source-dir: ${{steps.build.outputs.build-path}}
