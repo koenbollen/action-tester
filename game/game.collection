@@ -367,7 +367,7 @@ embedded_instances {
   "pivot: PIVOT_NW\\n"
   "blend_mode: BLEND_MODE_ALPHA\\n"
   "line_break: false\\n"
-  "text: \\\"ARROWS = MOVE\\\\n"
+  "text: \\\"ARROWS = MOVE (duh)\\\\n"
   "\\\"\\n"
   "  \\\"SPACE = JUMP + DOUBLE JUMP\\\\n"
   "\\\"\\n"
