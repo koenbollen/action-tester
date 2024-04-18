@@ -184,9 +184,6 @@ max_count = 64
 max_emitter_count = 64
 max_particle_count = 1024
 
-[iap]
-auto_finish_transactions = 1
-
 [network]
 http_timeout = 0
 ssl_certificates = 
