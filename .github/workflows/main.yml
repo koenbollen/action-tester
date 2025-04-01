@@ -47,6 +47,11 @@ jobs:
       with:
         name: pixel-line-web-${{github.ref_name}}-${{github.sha}}
         path: dist/${{github.sha}}
+    - name: Get Previous Commits
+      run: |
+        echo "EXCLUDE_LIST<<EOF" >> $GITHUB_ENV
+        git rev-list --max-count=5 "${{ github.sha }}" >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
     - name: Debug
       run: |
         echo $ ls:
@@ -57,14 +62,11 @@ jobs:
         echo
         echo $ ls dist/${{github.sha}}:
         ls dist/${{github.sha}}
-    - name: Get Previous Commits
-      run: |
-        echo "EXCLUDE_LIST<<EOF" >> $GITHUB_ENV
-        git rev-list --max-count=5 "${{ github.sha }}" >> $GITHUB_ENV
-        echo "EOF" >> $GITHUB_ENV
+        echo
+        echo ${{ env.EXCLUDE_LIST }}
     - uses: JamesIves/github-pages-deploy-action@6c2d9db40f9296374acc17b90404b6e8864128c8
       with:
-        folder: dist
+        folder: dist/
         clean-exclude: |
           index.html
           pr-preview/
