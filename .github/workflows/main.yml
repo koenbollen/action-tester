@@ -47,8 +47,16 @@ jobs:
       with:
         name: pixel-line-web-${{github.ref_name}}-${{github.sha}}
         path: dist
+    - name: Get Previous Commits
+      run: |
+        echo "EXCLUDE_LIST<<EOF" >> $GITHUB_ENV
+        git rev-list --max-count=5 "${{ github.sha }}" >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
     - uses: JamesIves/github-pages-deploy-action@v4
       with:
         folder: dist
-        clean-exclude: pr-preview/
+        target-folder: ${{github.sha}}
+        clean-exclude: |
+          pr-preview/
+          ${{ env.EXCLUDE_LIST }}
         force: false

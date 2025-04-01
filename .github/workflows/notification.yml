@@ -12,4 +12,4 @@ jobs:
       run: |
         echo "${{ github.event.workflow_run.head_commit.message }}"
         msg="* $(echo "${{ github.event.workflow_run.head_commit.message }}" | head -n1)"
-        curl -vf -d content="$msg" -d username="Change to Playground" "${{ secrets.DISCORD_WEBHOOK }}"
+        # curl -vf -d content="$msg" -d username="Change to Playground" "${{ secrets.DISCORD_WEBHOOK }}"
