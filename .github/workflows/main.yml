@@ -52,9 +52,8 @@ jobs:
     - name: Get Previous Commits
       run: |
         echo "EXCLUDE_LIST<<EOF" >> $GITHUB_ENV
-        git rev-list --max-count=5 "${{ github.sha }}" >> $GITHUB_ENV
+        git rev-list --max-count=5 "${{ github.sha }}" | tail +2 >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
-        git rev-list --max-count=5 "${{ github.sha }}"
     - name: Debug
       run: |
         echo $ pwd
