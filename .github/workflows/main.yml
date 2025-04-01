@@ -43,6 +43,8 @@ jobs:
       contents: write
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 5
     - uses: actions/download-artifact@v4
       with:
         name: pixel-line-web-${{github.ref_name}}-${{github.sha}}
@@ -54,6 +56,9 @@ jobs:
         echo "EOF" >> $GITHUB_ENV
     - name: Debug
       run: |
+        echo $ pwd
+        pwd
+        echo
         echo $ ls:
         ls
         echo
@@ -63,10 +68,11 @@ jobs:
         echo $ ls dist/${{github.sha}}:
         ls dist/${{github.sha}}
         echo
+        echo Exclude list:
         echo ${{ env.EXCLUDE_LIST }}
     - uses: JamesIves/github-pages-deploy-action@6c2d9db40f9296374acc17b90404b6e8864128c8
       with:
-        folder: dist/
+        folder: dist
         clean-exclude: |
           index.html
           pr-preview/
