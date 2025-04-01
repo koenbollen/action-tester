@@ -28,7 +28,7 @@ jobs:
       id: build
       with:
         target-platform: ${{matrix.platform}}
-        defold-channel: 'stable'
+        defold-version: '1.9.6'
     - uses: actions/upload-artifact@v4
       with:
         name: pixel-line-${{matrix.platform}}-${{github.ref_name}}-${{github.sha}}

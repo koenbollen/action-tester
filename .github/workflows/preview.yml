@@ -27,7 +27,7 @@ jobs:
       if: github.event.action != 'closed'
       with:
         target-platform: web
-        defold-channel: stable
+        defold-version: '1.9.6'
     - name: Deploy preview
       uses: rossjrw/pr-preview-action@v1
       with:
