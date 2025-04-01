@@ -17,7 +17,7 @@ jobs:
       contents: write
     strategy:
       matrix:
-        platform: [windows, linux, web]
+        platform: [web] # removed windows/linux for faster testing web
     steps:
     - uses: actions/checkout@v4
     - uses: actions/cache@v4
@@ -46,7 +46,17 @@ jobs:
     - uses: actions/download-artifact@v4
       with:
         name: pixel-line-web-${{github.ref_name}}-${{github.sha}}
-        path: dist
+        path: dist/${{github.sha}}
+    - name: Debug
+      run: |
+        echo $ ls:
+        ls
+        echo
+        echo $ !ls dist:
+        ls dist
+        echo
+        echo $ ls dist/${{github.sha}}:
+        ls dist/${{github.sha}}
     - name: Get Previous Commits
       run: |
         echo "EXCLUDE_LIST<<EOF" >> $GITHUB_ENV
@@ -55,8 +65,8 @@ jobs:
     - uses: JamesIves/github-pages-deploy-action@6c2d9db40f9296374acc17b90404b6e8864128c8
       with:
         folder: dist
-        target-folder: ${{github.sha}}
         clean-exclude: |
+          index.html
           pr-preview/
           ${{ env.EXCLUDE_LIST }}
         force: false
