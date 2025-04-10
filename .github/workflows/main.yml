@@ -54,10 +54,10 @@ jobs:
         echo "EXCLUDE_LIST<<EOF" >> $GITHUB_ENV
         git rev-list --max-count=5 "${{ github.sha }}" | tail +2 >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
-    - uses: JamesIves/github-pages-deploy-action@6c2d9db40f9296374acc17b90404b6e8864128c8
+    - uses: koenbollen/github-pages-deploy-action@facf4aa10b1f9f39a88b1376b5e93fac5ce72be6
       with:
         folder: dist
-        clean-exclude: |
+        exclude: |
           index.html
           pr-preview/
           ${{ env.EXCLUDE_LIST }}
