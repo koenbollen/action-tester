@@ -28,7 +28,7 @@ jobs:
       id: build
       with:
         target-platform: ${{matrix.platform}}
-        defold-version: '1.9.6'
+        defold-version: '1.10.1'
     - uses: actions/upload-artifact@v4
       with:
         name: pixel-line-${{matrix.platform}}-${{github.ref_name}}-${{github.sha}}
@@ -54,7 +54,7 @@ jobs:
         echo "EXCLUDE_LIST<<EOF" >> $GITHUB_ENV
         git rev-list --max-count=5 "${{ github.sha }}" | tail +2 >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
-    - uses: koenbollen/github-pages-deploy-action
+    - uses: koenbollen/github-pages-deploy-action@new-exclude-input
       with:
         folder: dist
         exclude: |
